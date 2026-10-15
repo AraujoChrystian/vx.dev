@@ -24,10 +24,8 @@ jobs:
 
       - name: Run UI Generation via OpenRouter
         env:
-          # Redireciona a chamada clássica da OpenAI para a rota económica do OpenRouter
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-          OPENAI_BASE_URL: https://openrouter.ai/api/v1
-          # Define explicitamente o modelo inteligente que quer usar no OpenRouter
+          OPENAI_BASE_URL: https://openrouter.ai
           OPENAI_MODEL: anthropic/claude-3.5-sonnet
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
         run: |
