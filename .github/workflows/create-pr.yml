@@ -2,29 +2,33 @@ name: Create PR
 
 on:
   issues:
-    types: [edited, labeled, unlabeled]
+    types: [opened]
   issue_comment:
-    types: [created, edited, deleted]
-  pull_request_review_comment:
-    types: [created, edited, deleted]
+    types: [created]
 
 jobs:
-  handle_issue:
+  create-pr:
     runs-on: ubuntu-latest
-    name: Create PR
-    if: "!contains(github.event.comment.body , '[vx.dev]') && github.event.comment.user.type != 'bot'"
+    if: |
+      github.event_name == 'issues' && contains(github.event.issue.labels.*.name, 'react ui-gen') ||
+      github.event_name == 'issue_comment' && contains(github.event.comment.body, 'gerar')
+
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
+
       - name: Setup Deno
         uses: denoland/setup-deno@v1
         with:
-          deno-version: 1.38.3
-      - name: generate UI
+          deno-version: v1.x
+
+      - name: Run UI Generation via OpenRouter
         env:
-          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+          # Redireciona a chamada clássica da OpenAI para a rota económica do OpenRouter
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-          WHITELIST: ${{ secrets.WHITELIST }}
-          CONFIG: ${{ vars.CONFIG }}
-          ACTOR: ${{ github.actor }}
-        run: deno run -A prompts/entry.ts
+          OPENAI_BASE_URL: https://openrouter.ai/api/v1
+          # Define explicitamente o modelo inteligente que quer usar no OpenRouter
+          OPENAI_MODEL: anthropic/claude-3.5-sonnet
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+        run: |
+          deno run --allow-net --allow-read --allow-write scripts/index.js
