@@ -17,10 +17,16 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Setup Deno
-        uses: denoland/setup-deno@v1
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
         with:
-          deno-version: v1.x
+          node-version: 20
+
+      - name: Install Dependencies
+        run: |
+          if [ -f "package.json" ]; then
+            npm install
+          fi
 
       - name: Run UI Generation via OpenRouter
         env:
@@ -29,10 +35,10 @@ jobs:
           OPENAI_MODEL: anthropic/claude-3.5-sonnet
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
         run: |
-          if [ -f "main.ts" ]; then
-            deno run --allow-net --allow-read --allow-write main.ts
-          elif [ -f "main.js" ]; then
-            deno run --allow-net --allow-read --allow-write main.js
+          if [ -f "main.js" ]; then
+            node main.js
+          elif [ -f "index.js" ]; then
+            node index.js
           else
-            deno run --allow-net --allow-read --allow-write scripts/main.ts || deno run --allow-net --allow-read --allow-write scripts/main.js
+            node src/main.js || node src/index.js || node scripts/main.js
           fi
