@@ -29,4 +29,6 @@ jobs:
           OPENAI_MODEL: anthropic/claude-3.5-sonnet
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
         run: |
-          deno run --allow-net --allow-read --allow-write scripts/index.js
+          run: |
+          deno run --allow-net --allow-read --allow-write scripts/main.ts
+
