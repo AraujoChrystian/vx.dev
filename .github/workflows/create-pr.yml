@@ -28,4 +28,4 @@ jobs:
           OPENAI_BASE_URL: https://openrouter.ai
           OPENAI_MODEL: anthropic/claude-3.5-sonnet
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
-        run: node scripts/ui-gen.js
+        run: node scripts/index.js
