@@ -28,7 +28,4 @@ jobs:
           OPENAI_BASE_URL: https://openrouter.ai
           OPENAI_MODEL: anthropic/claude-3.5-sonnet
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
-        run: |
-          run: |
-          deno run --allow-net --allow-read --allow-write scripts/main.ts
-
+        run: deno task start
