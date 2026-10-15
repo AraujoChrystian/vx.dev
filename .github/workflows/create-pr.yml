@@ -22,10 +22,13 @@ jobs:
         with:
           node-version: 20
 
+      - name: Install TSX (TypeScript Executor)
+        run: npm install -g tsx
+
       - name: Run UI Generation via OpenRouter
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
           OPENAI_BASE_URL: https://openrouter.ai
           OPENAI_MODEL: anthropic/claude-3.5-sonnet
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
-        run: node scripts/index.js
+        run: tsx scripts/index.ts
