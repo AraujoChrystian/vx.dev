@@ -17,10 +17,13 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Setup Deno
-        uses: denoland/setup-deno@v1
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
         with:
-          deno-version: v1.x
+          node-version: 20
+
+      - name: Install Dependencies
+        run: npm install
 
       - name: Run UI Generation via OpenRouter
         env:
@@ -28,4 +31,4 @@ jobs:
           OPENAI_BASE_URL: https://openrouter.ai
           OPENAI_MODEL: anthropic/claude-3.5-sonnet
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
-        run: deno task start
+        run: node scripts/ui-gen.js
