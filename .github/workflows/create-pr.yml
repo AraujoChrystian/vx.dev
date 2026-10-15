@@ -17,13 +17,10 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+      - name: Setup Deno
+        uses: denoland/setup-deno@v1
         with:
-          node-version: 20
-
-      - name: Install TSX (TypeScript Executor)
-        run: npm install -g tsx
+          deno-version: v1.x
 
       - name: Run UI Generation via OpenRouter
         env:
@@ -31,4 +28,4 @@ jobs:
           OPENAI_BASE_URL: https://openrouter.ai
           OPENAI_MODEL: anthropic/claude-3.5-sonnet
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
-        run: tsx scripts/index.ts
+        run: deno task dev
